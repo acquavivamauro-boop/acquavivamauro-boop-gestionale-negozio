@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionale Negozio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- LOGIN -->
+    <div id="loginBox" class="login-box">
+        <h2>Accesso Gestionale</h2>
+
+        <input type="text" id="codiceAccesso" placeholder="Codice utente">
+        <input type="password" id="passwordAccesso" placeholder="Password">
+
+        <button id="entra">Entra</button>
+    </div>
+
+    <!-- APP NASCOSTA FINO AL LOGIN -->
+    <div class="container" id="app" style="display: none;">
+
+        <h1>🏪 Gestionale Negozio</h1>
+
+        <!-- CORRISPETTIVI -->
+        <h2>Corrispettivi Giornalieri</h2>
+
+        <div class="card">
+
+            <div class="campo">
+                <label>Data</label>
+                <input type="date" id="data">
+            </div>
+
+            <div class="campo">
+                <label>Contanti (€)</label>
+                <input type="number" id="contanti" value="0" min="0">
+            </div>
+
+            <div class="campo">
+                <label>POS Locorotondo (€)</label>
+                <input type="number" id="posLocorotondo" value="0" min="0">
+            </div>
+
+            <div class="campo">
+                <label>POS Taranto (€)</label>
+                <input type="number" id="posTaranto" value="0" min="0">
+            </div>
+
+            <div class="campo">
+                <label>Buoni Pasto (€)</label>
+                <input type="number" id="buoni" value="0" min="0">
+            </div>
+
+            <div class="campo">
+                <label>Bonifici (€)</label>
+                <input type="number" id="bonifici" value="0" min="0">
+            </div>
+
+            <div class="campo">
+                <label>Totale Giornaliero (€)</label>
+                <input type="text" id="totale" readonly>
+            </div>
+
+            <div class="campo">
+                <label>Note</label>
+                <textarea id="note" rows="4"></textarea>
+            </div>
+
+            <button id="salva">💾 Salva Corrispettivo</button>
+
+            <br><br>
+
+            <label>Importa file Agenzia Entrate XML</label>
+            <input type="file" id="importaXml" accept=".xml">
+
+        </div>
+
+        <!-- CASSA E BANCHE -->
+        <h2>Versamenti / Prelievi / Banche</h2>
+
+        <div class="card">
+
+            <div class="campo">
+                <label>Data movimento</label>
+                <input type="date" id="dataMovimento">
+            </div>
+
+            <div class="campo">
+                <label>Tipo movimento</label>
+                <select id="tipoMovimento">
+                    <option value="versamento">Versamento</option>
+                    <option value="prelievo">Prelievo</option>
+                    <option value="fondo">Fondo cassa</option>
+                </select>
+            </div>
+
+            <div class="campo">
+                <label>Banca / Cassa</label>
+                <select id="bancaMovimento">
+                    <option value="Cassa Negozio">💵 Cassa Negozio</option>
+                    <option value="Fondo Cassa">💶 Fondo Cassa</option>
+                    <option value="BCC Locorotondo">🏦 BCC Locorotondo</option>
+                    <option value="BCC Taranto">🏦 BCC Taranto</option>
+                    <option value="POS Locorotondo da Incassare">💳 POS Locorotondo da Incassare</option>
+                    <option value="POS Taranto da Incassare">💳 POS Taranto da Incassare</option>
+                </select>
+            </div>
+
+            <div class="campo">
+                <label>Importo (€)</label>
+                <input type="number" id="importoMovimento" value="0" min="0">
+            </div>
+
+            <div class="campo">
+                <label>Descrizione</label>
+                <textarea id="descrizioneMovimento" rows="3"></textarea>
+            </div>
+
+            <button id="salvaMovimento">💶 Salva Movimento</button>
+
+        </div>
+
+        <h2>Situazione Cassa e Banche</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Voce</th>
+                    <th>Saldo</th>
+                </tr>
+            </thead>
+            <tbody id="situazioneBanche"></tbody>
+        </table>
+
+        <h2>Storico Movimenti</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Tipo</th>
+                    <th>Banca/Cassa</th>
+                    <th>Importo</th>
+                    <th>Descrizione</th>
+                </tr>
+            </thead>
+            <tbody id="storicoMovimenti"></tbody>
+        </table>
+
+        <!-- STORICO CORRISPETTIVI -->
+        <h2>Storico Corrispettivi</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Contanti</th>
+                    <th>POS Locorotondo</th>
+                    <th>POS Taranto</th>
+                    <th>Buoni</th>
+                    <th>Bonifici</th>
+                    <th>Totale</th>
+                    <th>Azioni</th>
+                </tr>
+            </thead>
+
+            <tbody id="storico"></tbody>
+        </table>
+
+        <!-- MAGAZZINO -->
+        <h2>📦 Magazzino</h2>
+
+        <div class="card">
+
+            <div class="campo">
+                <label>Data movimento</label>
+                <input type="date" id="dataMagazzino">
+            </div>
+
+            <div class="campo">
+                <label>Tipo movimento</label>
+                <select id="tipoMagazzino">
+                    <option value="carico">Carico</option>
+                    <option value="scarico">Scarico</option>
+                </select>
+            </div>
+
+            <div class="campo">
+                <label>Categoria</label>
+                <select id="categoriaMagazzino">
+                    <option>Abiti uomo</option>
+                    <option>Giacche uomo</option>
+                    <option>Pantaloni uomo</option>
+                    <option>Jeans uomo</option>
+                    <option>Camicie uomo</option>
+                    <option>Maglioni uomo</option>
+                    <option>Gilet uomo</option>
+                    <option>Trench uomo</option>
+                    <option>Cappotti uomo</option>
+                    <option>T-shirt / Polo uomo</option>
+                    <option>Scarpe uomo</option>
+                    <option>Abiti donna</option>
+                    <option>Giacche donna</option>
+                    <option>Pantaloni donna</option>
+                    <option>Jeans donna</option>
+                    <option>Camicie donna</option>
+                    <option>Maglieria donna</option>
+                    <option>Cappotti donna</option>
+                    <option>Giacconi donna</option>
+                    <option>Piumini donna</option>
+                    <option>Tailleur donna</option>
+                    <option>Sciarpe</option>
+                </select>
+            </div>
+
+            <div class="campo">
+                <label>Quantità</label>
+                <input type="number" id="quantitaMagazzino" value="0" min="0">
+            </div>
+
+            <div class="campo">
+                <label>Note</label>
+                <textarea id="noteMagazzino" rows="3"></textarea>
+            </div>
+
+            <button id="salvaMagazzino">💾 Salva movimento magazzino</button>
+
+        </div>
+
+        <h2>📊 Giacenze aggiornate</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Categoria</th>
+                    <th>Giacenza</th>
+                </tr>
+            </thead>
+            <tbody id="tabellaGiacenze"></tbody>
+        </table>
+
+        <h2>🔎 Filtri Magazzino</h2>
+
+        <div class="card">
+
+            <div class="campo">
+                <label>Data iniziale</label>
+                <input type="date" id="filtroDataInizio">
+            </div>
+
+            <div class="campo">
+                <label>Data finale</label>
+                <input type="date" id="filtroDataFine">
+            </div>
+
+            <div class="campo">
+                <label>Categoria</label>
+                <select id="filtroCategoria">
+                    <option value="">Tutte</option>
+                    <option>Abiti uomo</option>
+                    <option>Giacche uomo</option>
+                    <option>Pantaloni uomo</option>
+                    <option>Jeans uomo</option>
+                    <option>Camicie uomo</option>
+                    <option>Maglioni uomo</option>
+                    <option>Gilet uomo</option>
+                    <option>Trench uomo</option>
+                    <option>Cappotti uomo</option>
+                    <option>T-shirt / Polo uomo</option>
+                    <option>Scarpe uomo</option>
+                    <option>Abiti donna</option>
+                    <option>Giacche donna</option>
+                    <option>Pantaloni donna</option>
+                    <option>Jeans donna</option>
+                    <option>Camicie donna</option>
+                    <option>Maglieria donna</option>
+                    <option>Cappotti donna</option>
+                    <option>Giacconi donna</option>
+                    <option>Piumini donna</option>
+                    <option>Tailleur donna</option>
+                    <option>Sciarpe</option>
+                </select>
+            </div>
+
+            <div class="campo">
+                <label>Tipo movimento</label>
+                <select id="filtroTipo">
+                    <option value="">Tutti</option>
+                    <option value="carico">Carico</option>
+                    <option value="scarico">Scarico</option>
+                </select>
+            </div>
+
+            <button id="applicaFiltriMagazzino">🔍 Cerca</button>
+            <br><br>
+            <button id="azzeraFiltriMagazzino">❌ Azzera filtri</button>
+
+        </div>
+
+        <h2>📋 Storico Magazzino</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Tipo</th>
+                    <th>Categoria</th>
+                    <th>Quantità</th>
+                    <th>Ultima modifica</th>
+                    <th>Note</th>
+                    <th>Azioni</th>
+                </tr>
+            </thead>
+            <tbody id="storicoMagazzino"></tbody>
+        </table>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
